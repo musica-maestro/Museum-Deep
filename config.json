@@ -1,0 +1,66 @@
+{
+    "name": "Rewatch_VisitorNetResnet_Adam_01",
+    "n_gpu": 1,
+
+    "arch": {
+        "type": "VisitorNetResnet",
+        "args": {}
+    },
+    "train_data_loader": {
+        "type": "TrainDataLoader",
+        "args":{
+            "root_path": "data/",
+            "annotationfile_path": "data/annotationTrain.txt",
+            "num_segments": 3,
+            "frames_per_segment": 12,
+            "batch_size": 8,
+            "shuffle": true,
+            "validation_split": 0.15,
+            "num_workers": 0
+        }
+    },
+    "test_data_loader": {
+        "type": "TestDataLoader",
+        "args":{
+            "root_path": "data/",
+            "annotationfile_path": "data/annotationTest.txt",
+            "num_segments": 3,
+            "frames_per_segment": 12,
+            "batch_size": 16,
+            "shuffle": false,
+            "validation_split": 0.0,
+            "num_workers": 0
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args":{
+            "lr": 0.01,
+            "weight_decay": 0,
+            "amsgrad": true
+        }
+    },
+    "loss": "cross_entropy_loss",
+    "metrics": [
+        "accuracy"
+    ],
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.1
+        }
+    },
+    "trainer": {
+        "epochs": 25,
+
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        
+        "monitor": "max val_accuracy",
+        "early_stop": 5,
+
+        "tensorboard": true
+    }
+}
